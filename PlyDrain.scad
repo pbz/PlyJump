@@ -1,4 +1,8 @@
 include <lasercut\lasercut.scad>;
+//python lasercut\convert-2d.py PlyDrain.scad --library "lasercut\lasercut.scad"
+//TODO: Endcap(s)
+//TODO: Slots instead of holes?
+//TODO: Different (more secure) joint type?
 
 thickness = (3/8)*25.4;
 x = 1000;
@@ -9,7 +13,7 @@ drain_r=y/8;
 drain_spacing_r=4; //multiples of drain_r
 drain_spacing=drain_r*drain_spacing_r;
 x_drains = x/drain_spacing;
-sides_with_drains=4;
+sides_with_drains=1;
 
 drain_holes=[
     for(j=[1:1:x_drains-1]) 
