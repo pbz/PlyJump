@@ -1,15 +1,13 @@
 include <lasercut\lasercut.scad>;
 //python lasercut\convert-2d.py PlyDrain.scad --library "lasercut\lasercut.scad"
 
-//TODO: Endcap(s)
 //TODO: Different (more secure) joint type?
-//TODO: Fingers on ends to connect multiple
 
 milling_bit = 25.4/4;
 thickness = (3/8)*25.4;
 x = 1000;
 y = 100;
-z = 150;
+z = 75;
 end_fingers=2;
 side_fingers=8;
 drain_r=thickness;
@@ -42,7 +40,7 @@ module side(color="Gold",y=z,cutouts=[]){
                     [DOWN, 1, side_fingers],
                     [LEFT, 1, end_fingers]
                 ],
-            cutouts = cutouts,
+            cutouts=cutouts,
             milling_bit=milling_bit
         );
     }
@@ -53,6 +51,23 @@ module top(){
 
 module bottom(){
     side("blue", y=y);
+}
+
+module end(cutouts=[]){
+    color("green", 0.75)
+        lasercutoutSquare(
+            thickness=thickness,
+            x=z,
+            y=y,
+            finger_joints=[
+                    [UP, 0, end_fingers],
+                    [RIGHT, 0, end_fingers],
+                    [DOWN, 0, end_fingers],
+                    [LEFT, 0, end_fingers]
+                ],
+            cutouts = cutouts,
+            milling_bit=milling_bit
+        );
 }
 
 module tube(){
@@ -66,6 +81,12 @@ module tube(){
     translate([0,0-thickness,z+thickness])
         rotate([270,0,0])
             side();
+    translate([0,0,0+thickness])
+        rotate([0,-90,0])
+            end();
+    translate([x,0,z+thickness])
+        rotate([0,90,0])
+            end();
 }
 
 tube();
